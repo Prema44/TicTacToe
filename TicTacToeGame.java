@@ -6,6 +6,7 @@ public class TicTacToeGame {
 	
 	static char[] board;
 	static char player, computer;
+	static int count;
 
 	/**
 	 * UseCase 1
@@ -65,8 +66,8 @@ public class TicTacToeGame {
 		index = input.nextInt();
 		input.nextLine();
 		if((index >=1 && index <= 9)) {
-			if(board[index] == ' ') {
-				board[index] = player;
+			if(isBoardIndexFree(index)) {
+				makeMove(index, player, board);
 				showBoard();
 			}
 			else
@@ -79,6 +80,31 @@ public class TicTacToeGame {
 			System.out.println("Invalid Index or Free.Please enter another index");
 			moveToBoard(input,player);
 		}
+	}
+	
+	/**Usecase 5
+	 * Function checks whether the given index on board is free or not
+	 * @param index
+	 * @return
+	 */
+	public static boolean isBoardIndexFree(int index) {
+		boolean free = false;
+		if(board[index] == ' ') {
+			free = true;
+		}
+		return free;
+	}
+	
+	/**
+	 * UseCase 5
+	 * Function makes the move on the board
+	 * @param index
+	 * @param participant
+	 * @param board
+	 */
+	public static void makeMove(int index,char player,char[] board) {
+		board[index] = player;
+		count++;                       //count of number of plays
 	}
 
 	public static void main(String[] args) {
