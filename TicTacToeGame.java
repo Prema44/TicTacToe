@@ -80,6 +80,12 @@ public class TicTacToeGame {
 			if(index != 0) {
 				makeMove(index,computer,board);
 			}
+			else {
+				index = getWin(player);
+				if(index != 0) {
+					makeMove(index,computer,board);
+				}
+			}
 			count++;
 			checkGameStatus(input,computer,Chance.ComputerPlayer);
 		}
@@ -191,7 +197,7 @@ public class TicTacToeGame {
 		int index = 0;
 		char[] copyBoard = board;
 		for(int iteration = 1; iteration <= 9 ; iteration++) {
-			if(copyBoard[iteration] == ' ') {
+			if(copyBoard[index] == ' ') {
 				makeMove(iteration, participant,copyBoard);
 				if(checkWin(copyBoard,participant)) {
 					index = iteration;
@@ -217,6 +223,7 @@ public class TicTacToeGame {
 		toss(input);
 	}
 }
+
 
 
 
