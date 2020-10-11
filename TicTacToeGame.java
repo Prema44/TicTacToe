@@ -103,10 +103,10 @@ public class TicTacToeGame {
 					}
 				}
 			}
-			count++;
 			showBoard();
 			checkGameStatus(input,computer,Chance.ComputerPlayer);
 		}
+		count++;
 	}
 	/**Usecase 5
 	 * Function checks whether the given index on board is free or not
@@ -215,7 +215,7 @@ public class TicTacToeGame {
 		int index = 0;
 		char[] copyBoard = board;
 		for(int iteration = 1; iteration <= 9 ; iteration++) {
-			if(copyBoard[iteration] == ' ') {
+			if(copyBoard[index] == ' ') {
 				makeMove(iteration, participant,copyBoard);
 				if(checkWin(copyBoard,participant)) {
 					index = iteration;
@@ -264,6 +264,26 @@ public class TicTacToeGame {
 		}
 		return 0;
 	}
+	/**
+	 * Usecase 13
+	 * Function resets the board and the initial variables and starts the game
+	 * 
+	 */
+	public static void resetGame(Scanner input) {
+		createBoard();
+		computer = ' ';
+		player = ' ';
+		count = 0;
+		player = inputXorO(input);
+		if(player == 'X') {
+			computer = 'O';
+		}
+		else {
+			computer = 'X';
+		}
+		showBoard();
+		toss(input);
+	}
 	public static void main(String[] args) {
 		Scanner input = new Scanner(System.in);
 		createBoard() ;
@@ -276,5 +296,9 @@ public class TicTacToeGame {
 		}
 		showBoard();
 		toss(input);
+		System.out.println("Do you wish to play another game?(yes/no)");
+		if(input.nextLine().equals("yes")) {
+			resetGame(input);
+		}
 	}
 }
