@@ -1,13 +1,11 @@
 package tictactoe;
+import java.util.*;
 
-import java.util.Scanner;
 
 public class TicTacToeGame {
-	
 	static char[] board;
-	static char player, computer;
+	static char player,computer;
 	static int count;
-	
 	enum Chance{
 		HumanPlayer,ComputerPlayer;
 	}
@@ -16,8 +14,7 @@ public class TicTacToeGame {
 	 * UseCase 1
 	 * Function createBoard creates a board 
 	 * 
-	 **/
-	
+	 */
 	public static void createBoard(){
 		board = new char[10] ;
 		for(int index = 1; index <= 9; index++) {
@@ -43,7 +40,6 @@ public class TicTacToeGame {
 		}
 		return player;
 	}
-	
 	/**
 	 * Usecase 3
 	 * Function displays the board
@@ -56,7 +52,6 @@ public class TicTacToeGame {
 		System.out.println("--------------------");
 		System.out.println(" | " + board[7] + " | " + " | " + board[8] + " | " + " | " + board[9] + " | ");	
 	}
-	
 	/**
 	 * Usecase 4
 	 * Function helps the user to move to a particular position on the board
@@ -64,25 +59,22 @@ public class TicTacToeGame {
 	 * @param input
 	 * @param participant
 	 */
-	public static void moveToBoard(Scanner input,char player, Chance chance) {
+	
+	public static void moveToBoard(Scanner input,char participant,Chance chance) {
 		int index;
 		System.out.println("Enter the index you wish to move to:");
 		index = input.nextInt();
 		input.nextLine();
 		if((index >=1 && index <= 9)) {
 			if(isBoardIndexFree(index)) {
-				makeMove(index, player, board);
+				makeMove(index,participant,board);
 				showBoard();
+				checkGameStatus(input,participant, chance);
 			}
-			else
-			{
-				System.out.println("Not Free");
+			else {
+				System.out.println("Invalid Index or Index not Free.Please enter another index");
+				moveToBoard(input,participant,chance);
 			}
-			
-		}
-		else {
-			System.out.println("Invalid Index .Please enter another index");
-			moveToBoard(input,player,chance);
 		}
 	}
 	
@@ -106,8 +98,8 @@ public class TicTacToeGame {
 	 * @param participant
 	 * @param board
 	 */
-	public static void makeMove(int index,char player,char[] board) {
-		board[index] = player;
+	public static void makeMove(int index,char participant,char[] board) {
+		board[index] = participant;
 		count++;                       //count of number of plays
 	}
 	
@@ -127,11 +119,51 @@ public class TicTacToeGame {
 			moveToBoard(input, computer, Chance.ComputerPlayer);
 		}
 	}
+	
+	public static boolean checkWin(char[] board, char participant) {
+		boolean checkWin = false;
+		if(board[1] == board[2] && board[2] == board[3] && board[2] == participant ||
+				board[1] == board[4] && board[4] == board[7] && board[4] == participant ||
+				board[1] == board[5] && board[5] == board[9] && board[5] == participant ||
+				board[2] == board[5] && board[5] == board[8] && board[5] == participant ||
+				board[3] == board[6] && board[6] == board[9] && board[6] == participant ||
+				board[3] == board[5] && board[5] == board[7] && board[5] == participant ||
+				board[4] == board[5] && board[5] == board[6] && board[5] == participant ||
+				board[7] == board[8] && board[8] == board[9] && board[8] == participant ) {
+			checkWin = true;
+		}
+		return checkWin;
+	}
+	
+	public static boolean checkTie() {
+		boolean checkTie = false;
+		if (count == 9) {
+			checkTie = true;
+		}
+		return checkTie;
+	}
+	public static void checkGameStatus(Scanner input, char participant, Chance chance) {
+		if (checkWin(board, participant)) {
+			if (participant == player) {
+				System.out.println(" You Win");
+			} else {
+				System.out.println(" Computer Wins");
+			}
+		} else if (checkTie()) {
+			System.out.println("Game Tied");
+		} else {
+			if(chance == Chance.HumanPlayer){
+				moveToBoard(input,computer,Chance.ComputerPlayer);
+			}
+			else {
+				moveToBoard(input,player,Chance.HumanPlayer);
+			}
+		}
+	}
 
 	public static void main(String[] args) {
 		Scanner input = new Scanner(System.in);
 		createBoard() ;
-		
 		player = inputXorO(input);
 		if(player == 'X') {
 			computer = 'O';
@@ -141,9 +173,9 @@ public class TicTacToeGame {
 		}
 		showBoard();
 		toss(input);
-		
 	}
-}	
+}
+	
 
 
 
