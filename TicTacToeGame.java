@@ -7,6 +7,10 @@ public class TicTacToeGame {
 	static char[] board;
 	static char player, computer;
 	static int count;
+	
+	enum Chance{
+		HumanPlayer,ComputerPlayer;
+	}
 
 	/**
 	 * UseCase 1
@@ -60,7 +64,7 @@ public class TicTacToeGame {
 	 * @param input
 	 * @param participant
 	 */
-	public static void moveToBoard(Scanner input,char player) {
+	public static void moveToBoard(Scanner input,char player, Chance chance) {
 		int index;
 		System.out.println("Enter the index you wish to move to:");
 		index = input.nextInt();
@@ -77,8 +81,8 @@ public class TicTacToeGame {
 			
 		}
 		else {
-			System.out.println("Invalid Index or Free.Please enter another index");
-			moveToBoard(input,player);
+			System.out.println("Invalid Index .Please enter another index");
+			moveToBoard(input,player,chance);
 		}
 	}
 	
@@ -106,6 +110,23 @@ public class TicTacToeGame {
 		board[index] = player;
 		count++;                       //count of number of plays
 	}
+	
+	/**
+	 * Usecase 6
+	 * Function does a toss to pick randomly who initiates the game
+	 * @param input
+	 */
+	public static void toss(Scanner input) {
+		int random = (int) Math.floor((Math.random() * 2)) + 1;
+		if(random==1) {
+			System.out.println("You Start");
+			moveToBoard(input,player, Chance.HumanPlayer);	
+		}
+		else {
+			System.out.println("Computer Starts");
+			moveToBoard(input, computer, Chance.ComputerPlayer);
+		}
+	}
 
 	public static void main(String[] args) {
 		Scanner input = new Scanner(System.in);
@@ -119,7 +140,8 @@ public class TicTacToeGame {
 			computer = 'X';
 		}
 		showBoard();
-		moveToBoard(input,player);
+		toss(input);
+		
 	}
 }	
 
